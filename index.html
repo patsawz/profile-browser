@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html ng-app="profileBrowser">
+<head lang="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Profile Browser</title>
+	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="app.css">
+	<script src="jquery-1.11.3.min.js"></script>
+	<script src="bootstrap/js/bootstrap.min.js"></script>
+	<script src="angular.min.js"></script>
+	<script src="data.js"></script>
+	<script src="app.js"></script>
+</head>
+<body ng-controller="ProfileController as controller" class="container no-padding-left no-padding-right">
+<div class="col-sm-12 no-padding-left no-padding-right">
+	<h1 class="app-heading text-center">Profile Browser</h1>
+	<div class="desktop-display">
+		<div class="col-sm-3 navbar no-border-bottom">
+			<div class="individual" ng-repeat="profile in controller.profiles">
+			<ul ng-class="{ active : controller.isSet(profile.id) }"  class="nav nav-stacked nav-pills border-bottom">
+			    <li ng-class="{ active : controller.isSet(profile.id), 'top-left' : $first, 'bottom-left' : $last }">
+			    	<a 	class="buttons-small"
+		    			ng-click="controller.setTab(profile.id)"
+	    				data-toggle="collapse" 
+						data-parent="#accordion" 
+						href="#{{profile.id}}" 
+						aria-expanded="false" 
+						aria-controls="{{profile.id}}">
+					{{profile.firstName + ' ' + profile.lastName}}</a>
+				</li>
+			</ul>
+			</div>
+		</div>
+		<div class="col-sm-9 body-section">
+			<div ng-repeat="profile in controller.profiles">
+				<div ng-show="controller.isSet(profile.id)" class="{{profile.lastName}}">		
+					<div class="image-wrapper img-thumbnail"><img ng-src="{{profile.picture}}"></div>
+					<h3 class="full-name">{{profile.firstName + ' ' + profile.lastName}}</h3>
+					<span>{{profile.bio}}</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel-group mobile-display" id="accordion" role="tablist" aria-multiselectable="false">
+		<div class="panel panel-default no-margin-top no-border-top" ng-repeat="profile in controller.profiles" ng-class="{ top : $first }">
+			<div ng-class="{ active : controller.isSet(profile.id) }" 
+				class="panel-heading buttons-small" 
+				role="tab" 
+				id="heading-{{profile.id}}">
+				<h4 class="panel-title">
+		 		<a ng-click="controller.setTab(profile.id)"  
+					class="collapsed fill-div" 
+					role="button" 
+					data-toggle="collapse" 
+					data-parent="#accordion" 
+					href="#{{profile.id}}" 
+					aria-expanded="true" 
+					aria-controls="{{profile.id}}">
+				  {{profile.firstName + ' ' + profile.lastName}}
+				</a>
+			  </h4>
+			</div>
+			<div id="{{profile.id}}" class="panel-collapse collapse" ng-class='{in:$first}' role="tabpanel" aria-labelledby="heading-{{profile.id}}">
+				<div class="panel-body mobile-profile-body" ng-class="{ active: controller.isSet(profile.id) }">
+					<div class="image-wrapper img-thumbnail"><img ng-src="{{profile.picture}}"></div>
+					<span>{{profile.bio}}</span>
+				</div>
+			</div>
+		</div>  
+	</div>
+</div>
+</body>
+</html>
